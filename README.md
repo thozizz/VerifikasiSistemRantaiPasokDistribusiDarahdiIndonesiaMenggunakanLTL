@@ -1,0 +1,2 @@
+# VerifikasiSistemRantaiPasokDistribusiDarahdiIndonesiaMenggunakanLTL
+Kami melakukan verifikasi rantai pasok darah di Indonesia menggunakan Logika Temporal Linier
