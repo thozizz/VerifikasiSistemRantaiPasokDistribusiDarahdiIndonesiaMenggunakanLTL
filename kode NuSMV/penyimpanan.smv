@@ -1,0 +1,390 @@
+MODULE main
+VAR
+	--nodes and pseudo-nodes of ad
+	in_n0_initial : boolean;
+	in_n1 : boolean;
+	in_n2 : boolean;
+	in_n3 : boolean;
+	in_n4 : boolean;
+	in_n5 : boolean;
+	in_n6 : boolean;
+	in_n7 : boolean;
+	in_n8 : boolean;
+	in_n9 : boolean;
+	in_n10 : boolean;
+	in_n11 : boolean;
+	in_n12_final : boolean;
+	in_n13_final : boolean;
+	in_Fn2 : boolean;
+	in_Fn3 : boolean;
+	in_Fn4 : boolean;
+	in_Jn5 : boolean;
+	in_Jn7 : boolean;
+	in_Jn9 : boolean;
+	
+	--visitable nodes
+	acnode : {n0_initial, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12_final, n13_final, nop};
+	
+	--the visible action of a step
+	ac : {validasi_dan_kalibrasi_alat,cek_suhu_ruangan, cek_kondisi_visual_darah, cek_kadaluwarsa, suhu_ruangan_valid, kondisi_darah_valid, kadaluwarsa_valid, suhu_ruangan_invalid, kondisi_darah_invalid, kadaluwarsa_invalid, darah_valid,  nop};
+	
+	--input variables
+	suhu : {true, false};
+	kondisi : {true, false};
+	kadaluwarsa : {true, false};
+	
+	--control variables
+	
+INIT
+	--init all nodes
+	in_n0_initial = TRUE &
+	in_n1 = FALSE &
+	in_n2 = FALSE &
+	in_n3 = FALSE &
+	in_n4 = FALSE &
+	in_n5 = FALSE &
+	in_n6 = FALSE &
+	in_n7 = FALSE &
+	in_n8 = FALSE &
+	in_n9 = FALSE &
+	in_n10 = FALSE &
+	in_n11 = FALSE &
+	in_n12_final = FALSE &
+	in_n13_final = FALSE &
+	in_Fn2 = FALSE &
+	in_Fn3 = FALSE &
+	in_Fn4 = FALSE &
+	in_Jn5 = FALSE &
+	in_Jn7 = FALSE &
+	in_Jn9 = FALSE &
+	
+	--init control variables as assigned in first node
+	--set initial action node and visible action
+	acnode = n0_initial &
+	ac = nop;
+	
+--shortcut to what happens when an edge is taken	
+DEFINE
+	en0_initialn1_enabled := in_n0_initial;
+	en0_initialn1_taken := en0_initialn1_enabled &
+		--not in previous nodes anymore
+		!next(in_n0_initial) &
+		--arrive in target node
+		next(in_n1) &
+		--possibly taking hidden edges
+		next(in_Fn2) &
+		next(in_Fn3) &
+		next(in_Fn4) &
+		--doing assignments
+		--set next node
+		next(acnode = n1);
+		
+DEFINE
+	eFn2n2_enabled := in_Fn2;
+	eFn2n2_taken := eFn2n2_enabled &
+		--not in previous nodes anymore
+		!next(in_n1) &
+		!next(in_Fn2) &
+		--arive in target node
+		next(in_n2) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n2);
+		
+DEFINE
+	eFn3n3_enabled := in_Fn3;
+	eFn3n3_taken := eFn3n3_enabled &
+		--not in previous nodes anymore
+		!next(in_n1) &
+		!next(in_Fn3) &
+		--arrive in target node
+		next(in_n3) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n3);
+		
+DEFINE
+	eFn4n4_enabled := in_Fn4;
+	eFn4n4_taken := eFn4n4_enabled &
+		--not in previous nodes anymore
+		!next(in_n1) &
+		!next(in_Fn4) &
+		--arrive in target node
+		next(in_n4) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n4);
+		
+				
+DEFINE
+	en2n5_enabled := in_n2 & (suhu = true);
+	en2n5_taken := en2n5_enabled &
+		--not in previous nodes anymore
+		!next(in_n2) &
+		--arrive in target node
+		next(in_n5) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n5);
+		
+DEFINE
+	en3n7_enabled := in_n3 & (kondisi = true);
+	en3n7_taken := en3n7_enabled &
+		--not in previous nodes anymore
+		!next(in_n3) &
+		--arrive in target node
+		next(in_n7) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n7);
+		
+DEFINE
+	en4n9_enabled := in_n4 & (kadaluwarsa = false);
+	en4n9_taken := en4n9_enabled &
+		--not in previous nodes anymore
+		!next(in_n4) &
+		--arrive in target node
+		next(in_n9) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n9);
+				
+DEFINE
+	en2n6_enabled := in_n2 & (suhu = false);
+	en2n6_taken := en2n6_enabled &
+		--not in previous nodes anymore
+		!next(in_n2) &
+		!next(in_Fn3) &
+		!next(in_Fn4) &
+		--arrive in target node
+		next(in_n6) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n6);
+		
+DEFINE
+	en3n8_enabled := in_n3 & (kondisi = false);
+	en3n8_taken := en3n8_enabled &
+		--not in previous nodes anymore
+		!next(in_n3) &
+		!next(in_Fn2) &
+		!next(in_Fn4) &
+		--arrive in target node
+		next(in_n8) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n8);
+		
+DEFINE
+	en4n10_enabled := in_n4 & (kadaluwarsa = true);
+	en4n10_taken := en4n10_enabled &
+		--not in previous nodes anymore
+		!next(in_n4) &
+		!next(in_Fn2) &
+		!next(in_Fn3) &
+		--arrive in target node
+		next(in_n10) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n10);
+				
+DEFINE
+	eJn5Jn7Jn9n11_enabled := in_Jn5 & in_Jn7 & in_Jn9;
+	eJn5Jn7Jn9n11_taken := eJn5Jn7Jn9n11_enabled &
+		--not in previous nodes anymore
+		!next(in_n5) &
+		!next(in_n7) &
+		!next(in_n9) &
+		!next(in_n11) &
+		!next(in_Jn5) &
+		!next(in_Jn7) &
+		!next(in_Jn9) &
+		--arrive in target node
+		next(in_n11) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n11);
+		
+DEFINE
+	en11n12_final_enabled := in_n11;
+	en11n12_final_taken := en11n12_final_enabled &
+		--not in previous nodes anymore
+		!next(in_n11) &
+		--arrive in target node
+		next(in_n12_final) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n12_final);
+		
+DEFINE
+	en6n13_final_enabled := in_n6;
+	en6n13_final_taken := en6n13_final_enabled &
+		--not in previous nodes anymore
+		!next(in_n6) &
+		--arrive in target node
+		next(in_n13_final) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n13_final);
+		
+DEFINE
+	en8n13_final_enabled := in_n8;
+	en8n13_final_taken := en8n13_final_enabled &
+		--not in previous nodes anymore
+		!next(in_n8) &
+		--arrive in target node
+		next(in_n13_final) &
+		--possibly taking hidden edges
+		-- doing assignments
+		--set next node
+		next(acnode = n13_final);
+		
+DEFINE
+	en10n13_final_enabled := in_n10;
+	en10n13_final_taken := en10n13_final_enabled &
+		--not in previous nodes anymore
+		!next(in_n10) &
+		--arrive in target node
+		next(in_n13_final) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n13_final);
+		
+		
+TRANS
+	( (in_n0_initial = next(in_n0_initial) ) |
+	en0_initialn1_taken ) &
+	( (in_n1 = next(in_n1) ) |
+	en0_initialn1_taken |
+	eFn2n2_taken |
+	eFn3n3_taken |
+	eFn4n4_taken ) &
+	( (in_n2 = next(in_n2) ) |
+	eFn2n2_taken |
+	en2n5_taken |
+	en2n6_taken ) &
+	( (in_n3 = next(in_n3) ) |
+	eFn3n3_taken |
+	en3n7_taken |
+	en3n8_taken ) &
+	( (in_n4 = next(in_n4) ) |
+	eFn4n4_taken |
+	en4n9_taken |
+	en4n10_taken ) &
+	( (in_n5 = next(in_n5) ) |
+	en2n5_taken |
+	eJn5Jn7Jn9n11_taken ) &
+	( (in_n6 = next(in_n6) ) |
+	en2n6_taken |
+	en6n13_final_taken ) &
+	( (in_n7 = next(in_n7) ) |
+	en3n7_taken |
+	eJn5Jn7Jn9n11_taken ) &
+	( (in_n8 = next(in_n8) ) |
+	en3n8_taken |
+	en8n13_final_taken ) &
+	( (in_n9 = next(in_n9) ) |
+	en4n9_taken |
+	eJn5Jn7Jn9n11_taken ) &
+	( (in_n10 = next(in_n10) ) |
+	en4n10_taken |
+	en10n13_final_taken ) &
+	( (in_n11 = next(in_n11) ) |
+	eJn5Jn7Jn9n11_taken |
+	en11n12_final_taken ) &
+	( (in_n12_final = next(in_n12_final) ) |
+	en11n12_final_taken ) &
+	( (in_n13_final = next(in_n13_final) ) |
+	en6n13_final_taken |
+	en8n13_final_taken |
+	en10n13_final_taken ) &
+	( (in_Fn2 = next(in_Fn2) ) |
+	en0_initialn1_taken |
+	eFn2n2_taken ) &
+	( (in_Fn3 = next(in_Fn3) ) |
+	en0_initialn1_taken |
+	eFn3n3_taken ) &
+	( (in_Fn4 = next(in_Fn4) ) |
+	en0_initialn1_taken |
+	eFn4n4_taken ) &
+	( (in_Jn5 = next(in_Jn5) ) |
+	en2n5_taken |
+	eJn5Jn7Jn9n11_taken ) &
+	( (in_Jn7 = next(in_Jn7) ) |
+	en3n7_taken |
+	eJn5Jn7Jn9n11_taken ) &
+	( (in_Jn9 = next(in_Jn9) ) |
+	en4n9_taken |
+	eJn5Jn7Jn9n11_taken );
+	
+TRANS
+	( (next(acnode = nop) <-> in_n12_final) ) &
+		(in_n12_final | (
+			(en0_initialn1_taken) |
+			(eFn2n2_taken) |
+			(eFn3n3_taken) |
+			(eFn4n4_taken) |
+			(en2n5_taken) |
+			(en3n7_taken) |
+			(en4n9_taken) |
+			(eJn5Jn7Jn9n11_taken) |
+			(en11n12_final_taken) ) );
+			
+TRANS
+	( (next(acnode = nop) <-> in_n13_final) ) &
+		(in_n13_final | (
+			(en0_initialn1_taken) |
+			(eFn2n2_taken) |
+			(eFn3n3_taken) |
+			(eFn4n4_taken) |
+			(en2n6_taken) |
+			(en3n8_taken) |
+			(en4n10_taken) |
+			(en6n13_final_taken) |
+			(en8n13_final_taken) |
+			(en10n13_final_taken) ) );
+			
+TRANS
+	(next(acnode) = n0_initial -> next(ac) = nop) &
+	(next(acnode) = n1 -> next(ac) = validasi_dan_kalibrasi_alat) &
+	(next(acnode) = n2 -> next(ac) = cek_suhu_ruangan) &
+	(next(acnode) = n3 -> next(ac) = cek_kondisi_visual_darah) &
+	(next(acnode) = n4 -> next(ac) = cek_kadaluwarsa) &
+	(next(acnode) = n5 -> next(ac) = suhu_ruangan_valid) &
+	(next(acnode) = n6 -> next(ac) = suhu_ruangan_invalid) &
+	(next(acnode) = n7 -> next(ac) = kondisi_darah_valid) &
+	(next(acnode) = n8 -> next(ac) = kondisi_darah_invalid) &
+	(next(acnode) = n9 -> next(ac) = kadaluwarsa_invalid) &
+	(next(acnode) = n10 -> next(ac) = kadaluwarsa_valid) &
+	(next(acnode) = n11 -> next(ac) = darah_valid) &
+	(next(acnode) = n12_final -> next(ac) = nop) &
+	(next(acnode) = n13_final -> next(ac) = nop) ;
+
+DEFINE
+		phi18 := ((ac = cek_suhu_ruangan) & suhu = true);
+		phi19 := ((ac = cek_kondisi_visual_darah) & kondisi = true);
+		phi20 := ((ac = cek_kadaluwarsa) & kadaluwarsa = false);
+		
+		psi3 :=	( ac = suhu_ruangan_invalid) |
+				( ac = kondisi_darah_invalid) |
+				( ac = kadaluwarsa_invalid);
+	
+LTLSPEC
+	G(F(ac = darah_valid) -> O(phi18) & O(phi19) & O(phi20))
+	
+LTLSPEC
+	G(!(phi18 & phi19 & phi20) -> F(psi3))
+

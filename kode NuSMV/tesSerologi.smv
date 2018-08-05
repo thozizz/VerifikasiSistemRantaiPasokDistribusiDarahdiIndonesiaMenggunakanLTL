@@ -1,0 +1,513 @@
+MODULE main
+VAR
+	--nodes and pseudo-nodes of ad
+	in_n0_initial : boolean;
+	in_n1 : boolean;
+	in_n2 : boolean;
+	in_n3 : boolean;
+	in_n4 : boolean;
+	in_n5 : boolean;
+	in_n6 : boolean;
+	in_n7 : boolean;
+	in_n8 : boolean;
+	in_n9 : boolean;
+	in_n10 : boolean;
+	in_n11 : boolean;
+	in_n12 : boolean;
+	in_n13 : boolean;
+	in_n14 : boolean;
+	in_n15_final : boolean;
+	in_n16_final : boolean;
+	in_Fn2 : boolean;
+	in_Fn3 : boolean;
+	in_Fn4 : boolean;
+	in_Fn5 : boolean;
+	in_Jn6 : boolean;
+	in_Jn8 : boolean;
+	in_Jn10 : boolean;
+	in_Jn12 : boolean;
+	
+	--visitable nodes
+	acnode : {n0_initial, n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15_final, n16_final, nop};
+	
+	--the visible action of a step
+	ac : {uji_saring, cek_HCV, cek_HBV, cek_sifilis, cek_HIV, positif_HCV, positif_HBV, positif_HIV, positif_sifilis, negatif_HCV, negatif_HBV, negatif_sifilis, negatif_HIV, uji_saring_valid, nop};
+	
+	--input variables
+	HCV : {true, false};
+	HBV : {true, false};
+	sifilis : {true, false};
+	HIV : {true, false};
+	
+	--control variables
+	
+INIT
+	--init all nodes
+	in_n0_initial = TRUE &
+	in_n1 = FALSE &
+	in_n2 = FALSE &
+	in_n3 = FALSE &
+	in_n4 = FALSE &
+	in_n5 = FALSE &
+	in_n6 = FALSE &
+	in_n7 = FALSE &
+	in_n8 = FALSE &
+	in_n9 = FALSE &
+	in_n10 = FALSE &
+	in_n11 = FALSE &
+	in_n12 = FALSE &
+	in_n13 = FALSE &
+	in_n14 = FALSE &
+	in_n15_final = FALSE &
+	in_n16_final = FALSE &
+	in_Fn2 = FALSE &
+	in_Fn3 = FALSE &
+	in_Fn4 = FALSE &
+	in_Fn5 = FALSE &
+	in_Jn6 = FALSE &
+	in_Jn8 = FALSE &
+	in_Jn10 = FALSE &
+	in_Jn12 = FALSE &
+	
+	--init control variables as assigned in first node
+	--set initial action node and visible action
+	acnode = n0_initial &
+	ac = nop;
+	
+--shortcut to what happens when an edge is taken	
+DEFINE
+	en0_initialn1_enabled := in_n0_initial;
+	en0_initialn1_taken := en0_initialn1_enabled &
+		--not in previous nodes anymore
+		!next(in_n0_initial) &
+		--arrive in target node
+		next(in_n1) &
+		--possibly taking hidden edges
+		next(in_Fn2) &
+		next(in_Fn3) &
+		next(in_Fn4) &
+		next(in_Fn5) &
+		--doing assignments
+		--set next node
+		next(acnode = n1);
+		
+DEFINE
+	eFn2n2_enabled := in_Fn2;
+	eFn2n2_taken := eFn2n2_enabled &
+		--not in previous nodes anymore
+		!next(in_n1) &
+		!next(in_Fn2) &
+		--arive in target node
+		next(in_n2) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n2);
+		
+DEFINE
+	eFn3n3_enabled := in_Fn3;
+	eFn3n3_taken := eFn3n3_enabled &
+		--not in previous nodes anymore
+		!next(in_n1) &
+		!next(in_Fn3) &
+		--arrive in target node
+		next(in_n3) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n3);
+		
+DEFINE
+	eFn4n4_enabled := in_Fn4;
+	eFn4n4_taken := eFn4n4_enabled &
+		--not in previous nodes anymore
+		!next(in_n1) &
+		!next(in_Fn4) &
+		--arrive in target node
+		next(in_n4) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n4);
+		
+DEFINE
+	eFn5n5_enabled := in_Fn5;
+	eFn5n5_taken := eFn5n5_enabled &
+		--not in previous nodes anymore
+		!next(in_n1) &
+		!next(in_Fn5) &
+		--arrive in target node
+		next(in_n5) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n5);
+				
+DEFINE
+	en2n6_enabled := in_n2 & (HCV = false);
+	en2n6_taken := en2n6_enabled &
+		--not in previous nodes anymore
+		!next(in_n2) &
+		--arrive in target node
+		next(in_n6) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n6);
+		
+DEFINE
+	en3n8_enabled := in_n3 & (HBV = false);
+	en3n8_taken := en3n8_enabled &
+		--not in previous nodes anymore
+		!next(in_n3) &
+		--arrive in target node
+		next(in_n8) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n8);
+		
+DEFINE
+	en4n10_enabled := in_n4 & (sifilis = false);
+	en4n10_taken := en4n10_enabled &
+		--not in previous nodes anymore
+		!next(in_n4) &
+		--arrive in target node
+		next(in_n10) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n10);
+		
+DEFINE
+	en5n12_enabled := in_n5 & (HIV = false);
+	en5n12_taken := en5n12_enabled &
+		--not in previous nodes anymore
+		!next(in_n5) &
+		--arrive in target node
+		next(in_n12) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n12);
+		
+DEFINE
+	en2n7_enabled := in_n2 & (HCV = true);
+	en2n7_taken := en2n7_enabled &
+		--not in previous nodes anymore
+		!next(in_n2) &
+		!next(in_Fn3) &
+		!next(in_Fn4) &
+		!next(in_Fn5) &
+		--arrive in target node
+		next(in_n7) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n7);
+		
+DEFINE
+	en3n9_enabled := in_n3 & (HBV = true);
+	en3n9_taken := en3n9_enabled &
+		--not in previous nodes anymore
+		!next(in_n3) &
+		!next(in_Fn2) &
+		!next(in_Fn4) &
+		!next(in_Fn5) &
+		--arrive in target node
+		next(in_n9) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n9);
+		
+DEFINE
+	en4n11_enabled := in_n4 & (sifilis = true);
+	en4n11_taken := en4n11_enabled &
+		--not in previous nodes anymore
+		!next(in_n4) &
+		!next(in_Fn2) &
+		!next(in_Fn3) &
+		!next(in_Fn5) &
+		--arrive in target node
+		next(in_n11) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n11);
+		
+DEFINE
+	en5n13_enabled := in_n5 & (HIV = true);
+	en5n13_taken := en5n13_enabled &
+		--not in previous nodes anymore
+		!next(in_n5) &
+		!next(in_Fn2) &
+		!next(in_Fn3) &
+		!next(in_Fn4) &
+		--arrive in target node
+		next(in_n13) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n13);
+		
+DEFINE
+	eJn6Jn8Jn10Jn12n14_enabled := in_Jn6 & in_Jn8 & in_Jn10 & in_Jn12;
+	eJn6Jn8Jn10Jn12n14_taken := eJn6Jn8Jn10Jn12n14_enabled &
+		--not in previous nodes anymore
+		!next(in_n6) &
+		!next(in_n8) &
+		!next(in_n10) &
+		!next(in_n12) &
+		!next(in_Jn6) &
+		!next(in_Jn8) &
+		!next(in_Jn10) &
+		!next(in_Jn12) &
+		--arrive in target node
+		next(in_n14) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n14);
+		
+DEFINE
+	en14n15_final_enabled := in_n14;
+	en14n15_final_taken := en14n15_final_enabled &
+		--not in previous nodes anymore
+		!next(in_n14) &
+		--arrive in target node
+		next(in_n15_final) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n15_final);
+		
+DEFINE
+	en7n16_final_enabled := in_n7;
+	en7n16_final_taken := en7n16_final_enabled &
+		--not in previous nodes anymore
+		!next(in_n7) &
+		--arrive in target node
+		next(in_n16_final) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n16_final);
+		
+DEFINE
+	en9n16_final_enabled := in_n9;
+	en9n16_final_taken := en9n16_final_enabled &
+		--not in previous nodes anymore
+		!next(in_n9) &
+		--arrive in target node
+		next(in_n16_final) &
+		--possibly taking hidden edges
+		-- doing assignments
+		--set next node
+		next(acnode = n16_final);
+		
+DEFINE
+	en11n16_final_enabled := in_n11;
+	en11n16_final_taken := en11n16_final_enabled &
+		--not in previous nodes anymore
+		!next(in_n9) &
+		--arrive in target node
+		next(in_n16_final) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n16_final);
+		
+DEFINE
+	en13n16_final_enabled := in_n13;
+	en13n16_final_taken := en13n16_final_enabled &
+		--not in previous nodes anymore
+		!next(in_n13) &
+		--arrive in target node
+		next(in_n16_final) &
+		--possibly taking hidden edges
+		--doing assignments
+		--set next node
+		next(acnode = n16_final);
+		
+TRANS
+	( (in_n0_initial = next(in_n0_initial) ) |
+	en0_initialn1_taken ) &
+	( (in_n1 = next(in_n1) ) |
+	en0_initialn1_taken |
+	eFn2n2_taken |
+	eFn3n3_taken |
+	eFn4n4_taken |
+	eFn5n5_taken ) &
+	( (in_n2 = next(in_n2) ) |
+	eFn2n2_taken |
+	en2n6_taken |
+	en2n7_taken ) &
+	( (in_n3 = next(in_n3) ) |
+	eFn3n3_taken |
+	en3n8_taken |
+	en3n9_taken ) &
+	( (in_n4 = next(in_n4) ) |
+	eFn4n4_taken |
+	en4n10_taken |
+	en4n11_taken ) &
+	( (in_n5 = next(in_n5) ) |
+	eFn5n5_taken |
+	en5n12_taken |
+	en5n13_taken ) &
+	( (in_n6 = next(in_n6) ) |
+	en2n6_taken |
+	eJn6Jn8Jn10Jn12n14_taken ) &
+	( (in_n7 = next(in_n7) ) |
+	en2n7_taken |
+	en7n16_final_taken ) &
+	( (in_n8 = next(in_n8) ) |
+	en3n8_taken |
+	eJn6Jn8Jn10Jn12n14_taken ) &
+	( (in_n9 = next(in_n9) ) |
+	en3n9_taken |
+	en9n16_final_taken ) &
+	( (in_n10 = next(in_n10) ) |
+	en4n10_taken |
+	eJn6Jn8Jn10Jn12n14_taken ) &
+	( (in_n11 = next(in_n11) ) |
+	en4n11_taken |
+	en11n16_final_taken ) &
+	( (in_n12 = next(in_n12) ) |
+	en5n12_taken |
+	eJn6Jn8Jn10Jn12n14_taken ) &
+	( (in_n13 = next(in_n13) ) |
+	en5n13_taken |
+	en13n16_final_taken ) &
+	( (in_n14 = next(in_n14) ) |
+	eJn6Jn8Jn10Jn12n14_taken |
+	en14n15_final_taken ) &
+	( (in_n15_final = next(in_n15_final) ) |
+	en14n15_final_taken ) &
+	( (in_n16_final = next(in_n16_final) ) |
+	en7n16_final_taken |
+	en9n16_final_taken |
+	en11n16_final_taken |
+	en13n16_final_taken ) &
+	( (in_Fn2 = next(in_Fn2) ) |
+	en0_initialn1_taken |
+	eFn2n2_taken ) &
+	( (in_Fn3 = next(in_Fn3) ) |
+	en0_initialn1_taken |
+	eFn3n3_taken ) &
+	( (in_Fn4 = next(in_Fn4) ) |
+	en0_initialn1_taken |
+	eFn4n4_taken ) &
+	( (in_Fn5 = next(in_Fn5) ) |
+	en0_initialn1_taken |
+	eFn5n5_taken ) &
+	( (in_Jn6 = next(in_Jn6) ) |
+	en2n6_taken |
+	eJn6Jn8Jn10Jn12n14_taken ) &
+	( (in_Jn8 = next(in_Jn8) ) |
+	en3n8_taken |
+	eJn6Jn8Jn10Jn12n14_taken ) &
+	( (in_Jn10 = next(in_Jn10) ) |
+	en4n10_taken |
+	eJn6Jn8Jn10Jn12n14_taken ) &
+	( (in_Jn12 = next(in_Jn12) ) |
+	en5n12_taken |
+	eJn6Jn8Jn10Jn12n14_taken );
+	
+TRANS
+	( (next(acnode = nop) <-> in_n15_final) ) &
+		(in_n15_final | (
+			(en0_initialn1_taken) |
+			(eFn2n2_taken) |
+			(eFn3n3_taken) |
+			(eFn4n4_taken) |
+			(eFn5n5_taken) |
+			(en2n6_taken) |
+			(en3n8_taken) |
+			(en4n10_taken) |
+			(en5n12_taken) |
+			(eJn6Jn8Jn10Jn12n14_taken) |
+			(en14n15_final_taken) ) );
+			
+TRANS
+	( (next(acnode = nop) <-> in_n16_final) ) &
+		(in_n16_final | (
+			(en0_initialn1_taken) |
+			(eFn2n2_taken) |
+			(eFn3n3_taken) |
+			(eFn4n4_taken) |
+			(eFn5n5_taken) |
+			(en2n7_taken) |
+			(en3n9_taken) |
+			(en4n11_taken) |
+			(en5n13_taken) |
+			(en7n16_final_taken) |
+			(en9n16_final_taken) |
+			(en11n16_final_taken) |
+			(en13n16_final_taken) ) );
+			
+TRANS
+	(next(acnode) = n0_initial -> next(ac) = nop) &
+	(next(acnode) = n1 -> next(ac) = uji_saring) &
+	(next(acnode) = n2 -> next(ac) = cek_HCV) &
+	(next(acnode) = n3 -> next(ac) = cek_HBV) &
+	(next(acnode) = n4 -> next(ac) = cek_sifilis) &
+	(next(acnode) = n5 -> next(ac) = cek_HIV) &
+	(next(acnode) = n6 -> next(ac) = negatif_HCV) &
+	(next(acnode) = n7 -> next(ac) = positif_HCV) &
+	(next(acnode) = n8 -> next(ac) = negatif_HBV) &
+	(next(acnode) = n9 -> next(ac) = positif_HBV) &
+	(next(acnode) = n10 -> next(ac) = negatif_sifilis) &
+	(next(acnode) = n11 -> next(ac) = positif_sifilis) &
+	(next(acnode) = n12 -> next(ac) = negatif_HIV) &
+	(next(acnode) = n13 -> next(ac) = positif_HIV) &
+	(next(acnode) = n14 -> next(ac) = uji_saring_valid) &
+	(next(acnode) = n15_final -> next(ac) = nop) &
+	(next(acnode) = n16_final -> next(ac) = nop) ;
+
+DEFINE
+		p1 := ((ac = cek_HCV) & HCV = false);
+		p2 := ((ac = cek_HBV) & HBV = false);
+		p3 := ((ac = cek_sifilis) & sifilis = false);
+		p4 := ((ac = cek_HIV) & HIV = false);
+		
+		q1 :=	( ac = positif_HBV) |
+				( ac = positif_HCV) |
+				( ac = positif_sifilis) |
+				( ac = positif_HIV);
+
+--LTLSPEC F(ac = uji_saring_valid) xor F(q1)
+	
+--LTLSPEC G((p1 & p2 & p3 & p4) -> F(ac = uji_saring_valid))
+	
+--LTLSPEC G(!(p1 & p2 & p3 & p4) -> F(q1))
+
+--LTLSPEC F(ac = positif_HBV) & F(ac = negatif_HBV)
+
+--LTLSPEC F(ac = positif_HCV) xor F(ac = negatif_HCV)
+
+--LTLSPEC F(ac = positif_sifilis) xor F(ac = negatif_sifilis)
+
+--LTLSPEC G(ac = uji_saring -> F(ac = cek_HBV) & F(ac = cek_HCV) & F(ac = cek_sifilis) & F(ac = HIV))
+
+DEFINE	
+Phi7 := ((ac = cek_HCV) & HCV = false) ;
+Phi8 := ((ac = cek_HIV) & HIV = false);
+Phi9 := ((ac = cek_HBV) & HBV = false) ;
+Phi10 := ((ac = cek_sifilis) & sifilis = false);
+
+Phi11 := ((ac = cek_HCV) & HCV = true) ;
+Phi12 := ((ac = cek_HIV) & HIV = true);
+Phi13 := ((ac = cek_HBV) & HBV = true) ;
+Phi14 := ((ac = cek_sifilis) & sifilis = true);
+
+psi2 := (ac = positif_HCV) | (ac = positif_HBV) | (ac = positif_HIV) | (ac = positif_sifilis);
+
+LTLSPEC
+	G((ac = uji_saring_valid)->O(Phi7) & O(Phi8) & O(Phi9) & O(Phi10))
+
+LTLSPEC
+	G(! (Phi7 & Phi8 & Phi9 & Phi10) -> F(psi2))
+
+LTLSPEC
+	G(Phi11 | Phi12 | Phi13 | Phi14 -> !F(ac = uji_saring_valid))
